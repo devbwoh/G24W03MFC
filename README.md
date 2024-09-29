@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/9c6d8d9d-6db0-431a-8cc5-ecda7ab6fa57)# GUI 프로그래밍 2024
+# GUI 프로그래밍 2024
 
 # Week 03. MFC
 
