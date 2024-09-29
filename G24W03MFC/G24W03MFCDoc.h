@@ -12,7 +12,7 @@ protected:
 	//CPoint Point = CPoint(-100, -100);
 	CArray<CPoint, CPoint> Points;
 public:
-	int GetPointsCount() { return Points.GetCount(); }
+	int GetPointsCount() { return (int)Points.GetCount(); }
 
 	//CPoint GetPoint() { return Point; }
 	CPoint GetPoint(int index) { return Points[index]; }
