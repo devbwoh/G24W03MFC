@@ -30,6 +30,7 @@ BEGIN_MESSAGE_MAP(CG24W03MFCView, CView)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_RBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 // CG24W03MFCView 생성/소멸
@@ -62,27 +63,51 @@ void CG24W03MFCView::OnDraw(CDC* pDC)
 		return;
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
-	//CPoint p = pDoc->GetPoint();
+	//------------------------------------
+	CDC memDC;
+	memDC.CreateCompatibleDC(pDC);
 
-	//pDC->Ellipse(p.x - 30, p.y - 30, p.x + 30, p.y + 30);
+	CRect rect;
+	GetClientRect(&rect);
+
+	CBitmap bmp;
+	bmp.CreateCompatibleBitmap(pDC, rect.Width(), rect.Height());
+
+	CBitmap* old = memDC.SelectObject(&bmp);
+
+	memDC.FillSolidRect(rect, RGB(255, 255, 255));
+	//------------------------------------
+
 	int n = pDoc->GetPointsCount();
 
 	CString countString;
 	countString.Format(L"L Count: %d", n);
-	pDC->TextOutW(10, 10, countString);
+	//pDC->TextOutW(10, 10, countString);
+	memDC.TextOutW(10, 10, countString);
 
 #ifdef SHOW_R_COUNT
 	CString countRButton;
 	countRButton.Format(L"R Button: %d", rCount);
-	pDC->TextOutW(10, 32, countRButton);
+	//pDC->TextOutW(10, 32, countRButton);
+	memDC.TextOutW(10, 32, countRButton);
 #endif
 
 	CPoint p;
 	for (int i = 0; i < n; i++) {
 		p = pDoc->GetPoint(i);
 
-		pDC->Ellipse(p.x - 30, p.y - 30, p.x + 30, p.y + 30);
+		//pDC->Ellipse(p.x - 30, p.y - 30, p.x + 30, p.y + 30);
+		memDC.Ellipse(p.x - 30, p.y - 30, p.x + 30, p.y + 30);
 	}
+
+	//------------------------------------
+	pDC->BitBlt(0, 0,
+		rect.Width(), rect.Height(),
+		&memDC,
+		0, 0,
+		SRCCOPY);
+
+	memDC.SelectObject(old);
 }
 
 
@@ -160,4 +185,13 @@ void CG24W03MFCView::OnMouseMove(UINT nFlags, CPoint point)
 	}
 
 	CView::OnMouseMove(nFlags, point);
+}
+
+
+BOOL CG24W03MFCView::OnEraseBkgnd(CDC* pDC)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	//return CView::OnEraseBkgnd(pDC);
+	return TRUE;
 }
