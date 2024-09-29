@@ -4,9 +4,15 @@
 
 #pragma once
 
+// 마우스 오른쪽 버튼 클릭 수를 보려면 아래 주석 해제
+//#define SHOW_R_COUNT	
 
 class CG24W03MFCView : public CView
 {
+#ifdef SHOW_R_COUNT
+	int rCount = 0;
+#endif
+
 protected: // serialization에서만 만들어집니다.
 	CG24W03MFCView() noexcept;
 	DECLARE_DYNCREATE(CG24W03MFCView)
@@ -42,6 +48,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // G24W03MFCView.cpp의 디버그 버전
